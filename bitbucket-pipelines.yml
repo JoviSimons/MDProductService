@@ -6,7 +6,7 @@
 
 # Prerequisites: $DOCKERHUB_USERNAME, $DOCKERHUB_PASSWORD setup as deployment variables
 
-image: maven:4.0.0-jdk-11
+image: maven:3.8.3-jdk-11
 
 pipelines:
   default:
