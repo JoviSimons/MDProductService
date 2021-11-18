@@ -10,7 +10,7 @@ pipelines:
         - step:
             name: Build and Test
             script:
-              - mvn install
+              - mvn test
   branches:
     master:
       - step:
