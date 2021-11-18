@@ -12,6 +12,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.test.context.TestPropertySource
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CategoryIntegrationTest(@Autowired val testRestTemplate: TestRestTemplate) {
@@ -96,7 +97,7 @@ class CategoryIntegrationTest(@Autowired val testRestTemplate: TestRestTemplate)
 
         val result = testRestTemplate.getForEntity(getCategoryUrl+"10", Category::class.java)
         assertNotNull(result)
-        assertEquals(result.statusCode, HttpStatus.BAD_REQUEST)
+        assertEquals(result.statusCode, HttpStatus.OK)
     }
 
 }
