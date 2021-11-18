@@ -10,13 +10,13 @@ pipelines:
         - step:
             name: Build and Test
             script:
-              - mvn install
+              - mvn test
   branches:
     master:
       - step:
           name: Build and Test
           script:
-            - mvn install
+            - mvn clean install
             - IMAGE_NAME=product-service-docker
             - docker build . --file Dockerfile --tag ${IMAGE_NAME}
             - docker save ${IMAGE_NAME} --output "${IMAGE_NAME}.tar"

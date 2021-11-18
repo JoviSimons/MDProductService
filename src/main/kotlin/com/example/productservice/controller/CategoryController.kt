@@ -8,7 +8,7 @@ import java.util.*
 @RequestMapping("/MyDrugs")
 @CrossOrigin(origins = arrayOf("http://localhost:3000"))
 @RestController
-internal class CategoryController(repository: CategoryRepo) {
+class CategoryController(repository: CategoryRepo) {
     private val repo: CategoryRepo
 
 
