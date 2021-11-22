@@ -22,7 +22,7 @@ class CategoryRepositoryTest {
     }
 
     @Test
-    fun itShouldCheckWhenStudentEmailExists() {
+    fun itShouldCheckWhenNameExists() {
         // given
         val name = "testName"
         val category = Category()
@@ -38,7 +38,7 @@ class CategoryRepositoryTest {
     }
 
     @Test
-    fun itShouldCheckWhenStudentEmailDoesNotExists() {
+    fun itShouldCheckWhenNameDoesNotExists() {
         // given
         val name = "testName"
 

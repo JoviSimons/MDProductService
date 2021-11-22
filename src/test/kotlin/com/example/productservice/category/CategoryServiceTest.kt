@@ -1,60 +1,68 @@
 package com.example.productservice.category
 
-import com.example.productservice.exceptions.BadRequestException
 import com.example.productservice.model.Category
 import com.example.productservice.repo.CategoryRepo
 import com.example.productservice.service.CategoryService
-import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.assertj.core.api.BDDAssumptions.given
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
-import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.MockitoAnnotations
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 
-@ExtendWith(MockitoExtension::class)
+@DataJpaTest
 class CategoryServiceTest {
-
     @Mock
-    private val categoryRepository: CategoryRepo? = null
+    private val categoryRepo: CategoryRepo? = null
+    private var autoCloseable: AutoCloseable? = null
+    private var underTest: CategoryService? = null
 
-    private var service: CategoryService? = null
-
+    //before start of every test
     @BeforeEach
     fun setUp() {
-        service = CategoryService()
-        service!!.categoryRepo = categoryRepository
+        autoCloseable = MockitoAnnotations.openMocks(this)
+        underTest = CategoryService(categoryRepo!!)
+    }
+
+    //end of every test
+    @AfterEach
+    @Throws(Exception::class)
+    fun tearDown() {
+        autoCloseable!!.close()
     }
 
     @Test
-    fun canGetAllStudents() {
-        // when
-        service?.getAllCategories()
-        // then
-        verify(categoryRepository)?.findAll()
+    fun saveCategory() {
+        val cat = Category()
+        //when
+        underTest!!.saveCategory(cat)
+        //then
+        verify(categoryRepo)?.save(cat)
     }
 
     @Test
-    fun canAddStudent() {
-        // given
-        val category = Category()
-        category.name = "name"
-        category.description = "description"
+    fun category(){
+            //when
+            underTest?.categories
+            //then
+            verify(categoryRepo)?.findAll()
+        }
 
-        // when
-        service?.addCategory(category)
+    @Test
+    fun categoryById()
+         {
+            //when
+            underTest!!.getCategoryById(1)
+            //then
+            verify(categoryRepo)?.findById(1)
+        }
 
-        // then
-        val categoryArgumentCaptor: ArgumentCaptor<Category> = ArgumentCaptor.forClass(Category::class.java)
-        verify(categoryRepository)?.save(categoryArgumentCaptor.capture())
-        val capturedCategory: Category = categoryArgumentCaptor.value
-        assertThat(capturedCategory).isEqualTo(category)
+    @Test
+    fun deleteProduct() {
+        //when
+        underTest!!.deleteCategory(1)
+        //then
+        verify(categoryRepo)?.deleteById(1)
     }
-
 }

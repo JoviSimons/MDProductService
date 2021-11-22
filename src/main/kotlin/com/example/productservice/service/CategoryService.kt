@@ -5,21 +5,44 @@ import com.example.productservice.model.Category
 import com.example.productservice.repo.CategoryRepo
 import lombok.AllArgsConstructor
 import org.springframework.stereotype.Service
+import java.util.*
 
-@AllArgsConstructor
 @Service
-class CategoryService {
-    var categoryRepo: CategoryRepo? = null
-
-    fun getAllCategories(): List<Category?>? {
-        return categoryRepo?.findAll()
+class CategoryService(private val categoryRepo: CategoryRepo) {
+    //post product
+    fun saveCategory(category: Category): Category? {
+        return categoryRepo.save(category)
     }
 
-    fun addCategory(category: Category) {
-        val existsName: Boolean? = categoryRepo?.selectExistsName(category.name)
-        if (existsName == true) {
-            throw BadRequestException("Category name '" + category.name.toString() + "' taken")
+    //get products
+    val categories: List<Category>
+        get() = categoryRepo.findAll()
+
+    //get product by id
+    fun getCategoryById(id: Int): Optional<Category> {
+        try{
+            return categoryRepo.findById(id)
         }
-        categoryRepo?.save(category)
+        catch(e: Exception){
+            throw BadRequestException("Category not found")
+        }
+    }
+
+    //delete product
+    fun deleteCategory(id: Int): String {
+        try{
+            categoryRepo.deleteById(id)
+            return "Category deleted $id"
+        }catch(e: Exception){
+            throw BadRequestException("Category not found")
+        }
+    }
+
+    //update user
+    fun updateCategory(category: Category): Category {
+        val existingCategory = categoryRepo.findById(category.id!!).orElse(null)
+        existingCategory.name = category.name
+        existingCategory.description = category.description
+        return categoryRepo.save(existingCategory)
     }
 }
