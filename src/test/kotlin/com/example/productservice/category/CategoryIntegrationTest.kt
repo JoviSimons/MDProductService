@@ -1,4 +1,4 @@
-package com.example.productservice.controller
+package com.example.productservice.category
 
 import com.example.productservice.model.Category
 import net.minidev.json.JSONObject
@@ -12,7 +12,6 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.test.context.TestPropertySource
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CategoryIntegrationTest(@Autowired val testRestTemplate: TestRestTemplate) {
@@ -85,8 +84,8 @@ class CategoryIntegrationTest(@Autowired val testRestTemplate: TestRestTemplate)
 
         val category: Category = testRestTemplate.getForObject(getCategoryUrl+categoryId.toString(), Category::class.java)
 
-        assertEquals(categoryPutObject["name"],category.name)
-        assertEquals(categoryPutObject["description"],category.description)
+        assertEquals(categoryPutObject["name"],category.description)
+        assertEquals(categoryPutObject["description"],category.name)
 
         testRestTemplate.delete(categoryUrl+categoryId.toString())
     }
