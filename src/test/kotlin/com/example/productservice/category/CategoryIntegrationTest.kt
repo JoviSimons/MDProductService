@@ -1,5 +1,6 @@
 package com.example.productservice.category
 
+import com.example.productservice.exceptions.IllegalArgumentException
 import com.example.productservice.model.Category
 import net.minidev.json.JSONObject
 import org.junit.jupiter.api.Assertions.*
@@ -92,11 +93,38 @@ class CategoryIntegrationTest(@Autowired val testRestTemplate: TestRestTemplate)
 
     @Test
     fun testCategoryControllerDelete() {
-           // testRestTemplate.delete(categoryUrl+categoryId.toString())
+        val request = HttpEntity<String>(categoryPostObject.toString(), headers)
+
+        val postCategory: Category = testRestTemplate.postForObject(categoryUrl, request, Category::class.java)
+
+        assertNotNull(postCategory)
+        assertNotNull(postCategory.id)
+        categoryId = postCategory.id
+
+        testRestTemplate.delete(categoryUrl+categoryId.toString())
 
         val result = testRestTemplate.getForEntity(getCategoryUrl+"10", Category::class.java)
         assertNotNull(result)
-        assertEquals(result.statusCode, HttpStatus.OK)
+        assertEquals(HttpStatus.NOT_FOUND, result.statusCode)
+    }
+
+    @Test
+    fun testShowErrorOnDuplicateEntryOnAddCategory() {
+        //Make First request
+        val request = HttpEntity<String>(categoryPostObject.toString(), headers)
+        val postCategory: Category = testRestTemplate.postForObject(categoryUrl, request, Category::class.java)
+
+        assertNotNull(postCategory)
+        categoryId = postCategory.id
+
+        //Make Second request
+        val result: IllegalArgumentException = testRestTemplate.postForObject(categoryUrl, request, IllegalArgumentException::class.java)
+
+        assertEquals("Category name already exists",result.message)
+
+        testRestTemplate
+
+        testRestTemplate.delete(categoryUrl+categoryId.toString())
     }
 
 }
