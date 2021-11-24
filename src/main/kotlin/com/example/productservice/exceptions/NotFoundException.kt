@@ -1,8 +1,7 @@
 package com.example.productservice.exceptions
 
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.ResponseStatus
 
-
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class NotFoundException(msg: String?) : RuntimeException(msg)
+class NotFoundException(msg: String?) : RuntimeException(msg){
+    val status: HttpStatus = HttpStatus.NOT_FOUND
+}

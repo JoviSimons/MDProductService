@@ -20,22 +20,13 @@ class CategoryService(private val categoryRepo: CategoryRepo) {
 
     //get product by id
     fun getCategoryById(id: Int): Optional<Category> {
-        try{
             return categoryRepo.findById(id)
-        }
-        catch(e: Exception){
-            throw BadRequestException("Category not found")
-        }
     }
 
     //delete product
     fun deleteCategory(id: Int): String {
-        try{
             categoryRepo.deleteById(id)
             return "Category deleted $id"
-        }catch(e: Exception){
-            throw BadRequestException("Category not found")
-        }
     }
 
     //update user
@@ -44,5 +35,9 @@ class CategoryService(private val categoryRepo: CategoryRepo) {
         existingCategory.name = category.name
         existingCategory.description = category.description
         return categoryRepo.save(existingCategory)
+    }
+
+    fun nameExists(category: Category): Boolean?{
+        return categoryRepo.selectExistsName(category.name)
     }
 }
