@@ -11,6 +11,11 @@ pipelines:
             name: Build and Test
             script:
               - mvn test
+        - step:
+            name: SonarCloud
+            script:
+              - pipe: sonarsource/sonarcloud-scan:1.2.1
+              - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
   branches:
     master:
       - step:
