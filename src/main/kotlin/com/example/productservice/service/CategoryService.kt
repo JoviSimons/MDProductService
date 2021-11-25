@@ -1,9 +1,7 @@
 package com.example.productservice.service
 
-import com.example.productservice.exceptions.BadRequestException
 import com.example.productservice.model.Category
 import com.example.productservice.repo.CategoryRepo
-import lombok.AllArgsConstructor
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -19,9 +17,7 @@ class CategoryService(private val categoryRepo: CategoryRepo) {
         get() = categoryRepo.findAll()
 
     //get product by id
-    fun getCategoryById(id: Int): Optional<Category> {
-            return categoryRepo.findById(id)
-    }
+    fun getCategoryById(id: Int): Optional<Category> = categoryRepo.findById(id)
 
     //delete product
     fun deleteCategory(id: Int): String {
@@ -37,7 +33,5 @@ class CategoryService(private val categoryRepo: CategoryRepo) {
         return categoryRepo.save(existingCategory)
     }
 
-    fun nameExists(category: Category): Boolean?{
-        return categoryRepo.selectExistsName(category.name)
-    }
+    fun nameExists(category: Category): Boolean? = categoryRepo.selectExistsName(category.name)
 }
