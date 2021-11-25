@@ -22,15 +22,8 @@ clone:
           - mvn -B verify
         artifacts:
           - target/**
-
-
-pipelines:
-  default:
-  - step: *build-test
-  branches:
-    master:
-      - step:
-          name: Build and Test
+    - step: &build-test-createTar
+          name: build, test and create Tar
           script:
             - mvn clean install
             - IMAGE_NAME=product-service-docker
@@ -42,7 +35,7 @@ pipelines:
             - docker
           artifacts:
             - "*.tar"
-      - step:
+    - step: &deploy
           name: Deploy to Production
           deployment: Production
           script:
@@ -55,5 +48,14 @@ pipelines:
             - docker push "${IMAGE}:latest"
           services:
             - docker
+
+
+pipelines:
+  default:
+  - step: *build-test
+  branches:
+    master:
+      - step: *build-test-createTar
+      - step: *deploy
     development: 
           - step: *build-test-sonarcloud
