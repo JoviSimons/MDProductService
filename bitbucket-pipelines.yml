@@ -10,16 +10,12 @@ clone:
         name: Build, test and analyze on SonarCloud
         script:
           - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-        artifacts:
-          - target/**
     - step: &build-test
         name: Build and test
         caches:
           - maven
         script:
           - mvn -B verify
-        artifacts:
-          - target/**
     - step: &build-test-createTar
           name: build, test and create Tar
           script:
