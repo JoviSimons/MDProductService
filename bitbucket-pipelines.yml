@@ -12,8 +12,6 @@ clone:
   steps:
     - step: &build-test-sonarcloud
         name: Build, test and analyze on SonarCloud
-        caches:
-          - sonar
         script:
           - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
         artifacts:
