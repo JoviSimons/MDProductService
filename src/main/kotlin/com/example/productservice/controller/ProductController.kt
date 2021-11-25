@@ -1,4 +1,3 @@
-/*
 package com.example.productservice.controller
 
 import com.example.productservice.model.Product
@@ -53,4 +52,4 @@ internal class ProductController(repository: ProductRepo) {
         this.repository = repository
     }
 
-}*/
+}
