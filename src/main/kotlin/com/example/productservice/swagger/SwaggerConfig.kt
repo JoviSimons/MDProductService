@@ -11,7 +11,7 @@ import java.util.*
 
 @Configuration
 class SwaggerConfig {
-    @Bean
+ /*   @Bean
     fun swaggerConfiguration(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
             .select()
@@ -31,5 +31,5 @@ class SwaggerConfig {
             "www.jovisimons.com",
             Collections.emptyList()
         )
-    }
+    }*/
 }
