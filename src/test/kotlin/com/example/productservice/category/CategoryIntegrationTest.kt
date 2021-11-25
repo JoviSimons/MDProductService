@@ -67,6 +67,25 @@ class CategoryIntegrationTest(@Autowired val testRestTemplate: TestRestTemplate)
     }
 
     @Test
+    fun testShowErrorOnDuplicateEntryOnAddCategory() {
+        //Make First request
+        val request = HttpEntity<String>(categoryPostObject.toString(), headers)
+        val postCategory: Category = testRestTemplate.postForObject(categoryUrl, request, Category::class.java)
+
+        assertNotNull(postCategory)
+        categoryId = postCategory.id
+
+        //Make Second request
+        val result: IllegalArgumentException = testRestTemplate.postForObject(categoryUrl, request, IllegalArgumentException::class.java)
+
+        assertEquals("Category name already exists",result.message)
+
+        testRestTemplate
+
+        testRestTemplate.delete(categoryUrl+categoryId.toString())
+    }
+
+    @Test
     fun testCategoryControllerPut() {
 
         var request = HttpEntity<String>(categoryPostObject.toString(), headers)
@@ -107,24 +126,4 @@ class CategoryIntegrationTest(@Autowired val testRestTemplate: TestRestTemplate)
         assertNotNull(result)
         assertEquals(HttpStatus.NOT_FOUND, result.statusCode)
     }
-
-    @Test
-    fun testShowErrorOnDuplicateEntryOnAddCategory() {
-        //Make First request
-        val request = HttpEntity<String>(categoryPostObject.toString(), headers)
-        val postCategory: Category = testRestTemplate.postForObject(categoryUrl, request, Category::class.java)
-
-        assertNotNull(postCategory)
-        categoryId = postCategory.id
-
-        //Make Second request
-        val result: IllegalArgumentException = testRestTemplate.postForObject(categoryUrl, request, IllegalArgumentException::class.java)
-
-        assertEquals("Category name already exists",result.message)
-
-        testRestTemplate
-
-        testRestTemplate.delete(categoryUrl+categoryId.toString())
-    }
-
 }
