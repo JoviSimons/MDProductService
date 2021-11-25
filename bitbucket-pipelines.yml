@@ -1,20 +1,27 @@
-
-# The workflow allows running tests, code linting and security scans on feature branches (as well as master).
-# The docker image will be validated and pushed to the docker registry after the code is merged to master.
-
 image: maven:3.8.3-jdk-11
-
-pipelines:
-  default:
-    - parallel:
-        - step:
-            name: Build and Test
-            script:
-              - mvn test
-  branches:
-    master:
-      - step:
-          name: Build and Test
+clone:
+  depth: full    # SonarCloud scanner needs the full history to assign issues properly
+  
+  definitions:
+  caches:
+    sonar: ~/.sonar/cache  # Caching SonarCloud artifacts will speed up your build
+  steps:
+    - step: &build-test-sonarcloud
+        name: Build, test and analyze on SonarCloud
+        script:
+          - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        artifacts:
+          - target/**
+    - step: &build-test
+        name: Build and test
+        caches:
+          - maven
+        script:
+          - mvn -B verify
+        artifacts:
+          - target/**
+    - step: &build-test-createTar
+          name: build, test and create Tar
           script:
             - mvn clean install
             - IMAGE_NAME=product-service-docker
@@ -26,7 +33,7 @@ pipelines:
             - docker
           artifacts:
             - "*.tar"
-      - step:
+    - step: &deploy
           name: Deploy to Production
           deployment: Production
           script:
@@ -39,3 +46,16 @@ pipelines:
             - docker push "${IMAGE}:latest"
           services:
             - docker
+
+
+pipelines:
+  default:
+  - step: *build-test
+  branches:
+    master:
+      - step: *build-test-createTar
+      - step: *deploy
+    development: 
+          - step: *build-test-sonarcloud
+    pull-requests:
+      - step: *build-test-sonarcloud
