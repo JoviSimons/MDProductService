@@ -58,5 +58,4 @@ pipelines:
     development: 
           - step: *build-test-sonarcloud
     pull-requests:
-    '**':
       - step: *build-test-sonarcloud
