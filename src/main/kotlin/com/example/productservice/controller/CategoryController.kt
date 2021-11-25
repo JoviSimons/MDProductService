@@ -4,16 +4,12 @@ import com.example.productservice.exceptions.BadRequestException
 import com.example.productservice.exceptions.IllegalArgumentException
 import com.example.productservice.exceptions.NotFoundException
 import com.example.productservice.model.Category
-import com.example.productservice.repo.CategoryRepo
 import com.example.productservice.service.CategoryService
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.lang.Exception
 import java.util.*
 
 @RequestMapping("/MyDrugs")
-@CrossOrigin(origins = arrayOf("http://localhost:3000"))
+@CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
 class CategoryController(categoryService: CategoryService) {
     private val service: CategoryService
@@ -33,7 +29,7 @@ class CategoryController(categoryService: CategoryService) {
     // Single item
     @GetMapping("/categories/{id}")
     fun one(@PathVariable id: Int): Optional<Category> {
-        val optCat: Optional<Category>  = service.getCategoryById(id);
+        val optCat: Optional<Category>  = service.getCategoryById(id)
         if (optCat.isPresent){
             return optCat
         } else {
@@ -62,7 +58,6 @@ class CategoryController(categoryService: CategoryService) {
             throw NotFoundException("Category not found")
         }
     }
-
 
     init {
         this.service = categoryService
