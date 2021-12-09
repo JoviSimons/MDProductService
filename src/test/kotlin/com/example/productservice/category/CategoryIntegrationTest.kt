@@ -65,6 +65,7 @@ class CategoryIntegrationTest(@Autowired val testRestTemplate: TestRestTemplate)
         testRestTemplate.delete(categoryUrl+categoryId.toString())
 
     }
+
     @Test
     fun testShowErrorOnDuplicateEntryOnAddCategory() {
         //Make First request
