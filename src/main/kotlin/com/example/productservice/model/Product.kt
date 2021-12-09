@@ -12,7 +12,7 @@ class Product {
     var price: Int? = null
 
     @ManyToOne
-    @JoinColumn(name = "category_id", insertable = false, updatable = false)
-    private val category: Category? = null
+    @JoinColumn(name = "category_id", insertable = true, updatable = true)
+    var category: Category? = null
 
 }
