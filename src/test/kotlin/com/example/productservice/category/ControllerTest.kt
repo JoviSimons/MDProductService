@@ -23,7 +23,7 @@ internal class ControllerTest @Autowired constructor(
     val baseUrl = "/MyDrugs/categories"
 
     @Nested
-    @DisplayName("GET /MyDrugs/categories")
+    @DisplayName("GET As an admin I want to get categories")
     @TestInstance(Lifecycle.PER_CLASS)
     inner class GetCategories {
 
@@ -41,7 +41,7 @@ internal class ControllerTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("GET /MyDrugs/categories/{id}")
+    @DisplayName("GET As an admin I want to get categories")
     @TestInstance(Lifecycle.PER_CLASS)
     inner class GetCategory {
 
@@ -72,7 +72,7 @@ internal class ControllerTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("POST /MyDrugs/categories")
+    @DisplayName("POST As an admin I want to create new categories")
     @TestInstance(Lifecycle.PER_CLASS)
     inner class PostNewCategory {
 
@@ -126,7 +126,7 @@ internal class ControllerTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("Put /MyDrugs/categories")
+    @DisplayName("Put As an admin I want to edit categories")
     @TestInstance(Lifecycle.PER_CLASS)
     inner class PutExistingCategory {
 
@@ -195,7 +195,7 @@ internal class ControllerTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("DELETE /MyDrugs/categories/{id}")
+    @DisplayName("DELETE As admin I want to delete categories")
     @TestInstance(Lifecycle.PER_CLASS)
     inner class DeleteExistingCategory {
 
